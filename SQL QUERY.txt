@@ -1,0 +1,28 @@
+SELECT TOP 10 * 
+FROM UK_Housing_Project.dbo.Price_paid_data;
+
+SELECT 
+    county, 
+    COUNT(*) as total_sales
+FROM dbo.Price_paid_data
+GROUP BY county
+ORDER BY total_sales DESC;
+
+CREATE VIEW v_UK_Housing_Clean AS
+SELECT 
+    column2 AS Price,
+    CAST(column3 AS DATE) AS Sale_Date,
+    column12 AS City,
+    column13 AS District,
+    column14 AS County,
+    column5 AS Property_Type
+FROM dbo.Price_paid_data;
+
+SELECT TOP 10 
+    City, 
+    AVG(CAST(Price AS BIGINT)) AS Average_Price,
+    COUNT(*) AS Total_Sales
+FROM v_UK_Housing_Clean
+GROUP BY City
+HAVING COUNT(*) > 10
+ORDER BY Average_Price DESC;
